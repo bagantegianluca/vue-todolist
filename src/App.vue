@@ -24,85 +24,135 @@ https://vuejs.org/guide/essentials/forms.html
 
 <script>
 export default {
-  name: 'App',
+  name: "App",
+
+  //#region DATA
   data() {
     return {
-      title: 'Cosa devo fare per imparare a guidare la macchina?',
-      newTodo: '',
+      title: "Cosa devo fare per imparare a guidare la macchina?",
+      newTodo: "",
       todoList: [
         {
-          text: 'Imparare a partire da fermo',
-          done: true
+          text: "Imparare a partire da fermo",
+          done: true,
         },
         {
-            text: 'Imparare a cambiare le marce',
-            done: true
+          text: "Imparare a cambiare le marce",
+          done: true,
         },
         {
-            text: 'Imparare frenare',
-            done: false
+          text: "Imparare frenare",
+          done: false,
         },
         {
-            text: 'Imparare a scalare le marce',
-            done: false
+          text: "Imparare a scalare le marce",
+          done: false,
         },
         {
-            text: 'Imparare a parcheggiare',
-            done: false
-        }
-      ]
-    }
+          text: "Imparare a parcheggiare",
+          done: false,
+        },
+      ],
+    };
   },
+  //#endregion DATA
+
+  //#region METHODS
   methods: {
     addTask(task) {
       if (task.length >= 10) {
-      const newtask = {text: task, done: false};
-      this.todoList.push(newtask);
-      this.newTodo = '';
-      console.log(`Added element '${task}' in position ${this.todoList.length - 1}`);
+        const newtask = { text: task, done: false };
+        this.todoList.push(newtask);
+        this.newTodo = "";
+        console.log(
+          `Added element '${task}' in position ${this.todoList.length - 1}`
+        );
       } else {
-        alert('La lunghezza minima deve essere di almeno 10 caratteri');
+        alert("La lunghezza minima deve essere di almeno 10 caratteri");
         console.log(`Task '${task}' not added because too short`);
-      };
+      }
     },
     removeTask(task, i) {
       this.todoList.splice(i, 1);
       console.log(`Removed element '${task.text}' in position ${i}`);
     },
     toggleDone(task, i) {
-      task.done ? this.todoList[i].done = false : this.todoList[i].done = true;
-      console.log(`L'elemento '${task.text}' è ora ${task.done ? 'fatto' : 'da fare'}`);
-    }
-  }
-}
+      task.done
+        ? (this.todoList[i].done = false)
+        : (this.todoList[i].done = true);
+      console.log(
+        `L'elemento '${task.text}' è ora ${task.done ? "fatto" : "da fare"}`
+      );
+    },
+  },
+  //#endregion
+};
 </script>
 
 <template>
+  <h1>{{ title }}</h1>
 
-<h1>{{ title }}</h1>
-<div class="new-task">
-  <input type="text" placeholder="Inserisci un nuovo task" v-model="newTodo" @keyup.enter="addTask(newTodo)">
-  <button @click="addTask(newTodo)">Aggiungi</button>
-</div>
+  <div class="new-task">
+    <input
+      type="text"
+      placeholder="Inserisci un nuovo task"
+      v-model="newTodo"
+      @keyup.enter="addTask(newTodo)"
+    />
+    <button @click="addTask(newTodo)">Aggiungi</button>
+  </div>
 
-<ul>
-  <li v-for="(todo, index) in todoList" :class="todo.done ? 'todo-done' : ''">
-    <div class="tagRemove" @click="removeTask(todo, index)"><i class="fa-solid fa-xmark"></i></div>
-    <span @click="toggleDone(todo, index)">{{ todo.text}}</span>
-  <span v-if="todo.done" :class="'color-green'" @click="toggleDone(todo, index)"><i class="fa-regular fa-square-check"></i></span>
-  <span v-else="todo.done" :class="'color-red'" @click="toggleDone(todo, index)"><i class="fa-regular fa-square"></i></span>
-  </li>
-</ul>
-
+  <ul>
+    <li v-for="(todo, index) in todoList" :class="todo.done ? 'todo-done' : ''">
+      <div class="tagRemove" @click="removeTask(todo, index)">
+        <i class="fa-solid fa-xmark"></i>
+      </div>
+      <span @click="toggleDone(todo, index)">{{ todo.text }}</span>
+      <span
+        v-if="todo.done"
+        :class="'color-green'"
+        @click="toggleDone(todo, index)"
+        ><i class="fa-regular fa-square-check"></i
+      ></span>
+      <span
+        v-else="todo.done"
+        :class="'color-red'"
+        @click="toggleDone(todo, index)"
+        ><i class="fa-regular fa-square"></i
+      ></span>
+    </li>
+  </ul>
 </template>
 
 <style>
-button{margin-left: 1rem;}
-*{list-style: none}
-li{display: flex; gap: .5rem; margin-block: 1rem;}
-span, .tagRemove{cursor: pointer;}
-.tagRemove{background: red; color: white; border-radius: 5px; padding-inline: .4rem;}
-.todo-done{text-decoration: line-through}
-.color-green{color: green}
-.color-red{color: red}
+button {
+  margin-left: 1rem;
+}
+* {
+  list-style: none;
+}
+li {
+  display: flex;
+  gap: 0.5rem;
+  margin-block: 1rem;
+}
+span,
+.tagRemove {
+  cursor: pointer;
+}
+.tagRemove {
+  background: red;
+  color: white;
+  border-radius: 5px;
+  padding-inline: 0.4rem;
+}
+.todo-done {
+  text-decoration: line-through;
+}
+.color-green {
+  color: green;
+}
+.color-red {
+  color: red;
+}
 </style>
