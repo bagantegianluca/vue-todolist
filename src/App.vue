@@ -53,7 +53,10 @@ export default {
     }
   },
   methods: {
-    
+    removeTask(i) {
+      console.log(`Removed elemente in position ${i}`);
+      this.todoList.splice(i, 1);
+    }
   }
 }
 </script>
@@ -63,10 +66,11 @@ export default {
 <h1>{{ title }}</h1>
 
 <ul>
-  <li v-for="todo in todoList" :class="todo.done ? 'todo-done' : ''">
+  <li v-for="(todo, index) in todoList" :class="todo.done ? 'todo-done' : ''">
+    <div class="tagRemove" @click="removeTask(index)"><i class="fa-solid fa-xmark"></i></div>
+    {{ todo.text}}
   <span v-if="todo.done" :class="'color-green'"><i class="fa-regular fa-square-check"></i></span>
   <span v-else="todo.done" :class="'color-red'"><i class="fa-regular fa-square"></i></span>
-    {{ todo.text}}
   </li>
 </ul>
 
@@ -74,6 +78,8 @@ export default {
 
 <style>
 *{list-style: none}
+li{display: flex; gap: .5rem; margin-block: 1rem;}
+.tagRemove{background: red; color: white; border-radius: 5px; padding-inline: .4rem; cursor: pointer;}
 .todo-done{text-decoration: line-through;}
 .color-green{color: green}
 .color-red{color: red}
