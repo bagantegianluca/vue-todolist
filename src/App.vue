@@ -28,6 +28,7 @@ export default {
   data() {
     return {
       title: 'Cosa devo fare per imparare a guidare la macchina?',
+      newTodo: '',
       todoList: [
         {
           text: 'Imparare a partire da fermo',
@@ -53,8 +54,14 @@ export default {
     }
   },
   methods: {
-    removeTask(i) {
-      console.log(`Removed elemente in position ${i}`);
+    addTask(task) {
+      console.log(`Added element '${task}'`);
+      const newtask = {text: task, done: false};
+      this.todoList.push(newtask);
+      this.newTodo = '';
+    },
+    removeTask(task, i) {
+      console.log(`Removed element '${task}' in position ${i}`);
       this.todoList.splice(i, 1);
     }
   }
@@ -64,10 +71,14 @@ export default {
 <template>
 
 <h1>{{ title }}</h1>
+<div class="new-task">
+  <input type="text" placeholder="Inserisci un nuovo task" v-model="newTodo" @keyup.enter="addTask(newTodo)">
+  <button @click="addTask(newTodo)">Aggiungi</button>
+</div>
 
 <ul>
   <li v-for="(todo, index) in todoList" :class="todo.done ? 'todo-done' : ''">
-    <div class="tagRemove" @click="removeTask(index)"><i class="fa-solid fa-xmark"></i></div>
+    <div class="tagRemove" @click="removeTask(todo.text, index)"><i class="fa-solid fa-xmark"></i></div>
     {{ todo.text}}
   <span v-if="todo.done" :class="'color-green'"><i class="fa-regular fa-square-check"></i></span>
   <span v-else="todo.done" :class="'color-red'"><i class="fa-regular fa-square"></i></span>
@@ -77,6 +88,7 @@ export default {
 </template>
 
 <style>
+button{margin-left: 1rem;}
 *{list-style: none}
 li{display: flex; gap: .5rem; margin-block: 1rem;}
 .tagRemove{background: red; color: white; border-radius: 5px; padding-inline: .4rem; cursor: pointer;}
