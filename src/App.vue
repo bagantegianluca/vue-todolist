@@ -33,36 +33,45 @@ export default {
         {
           text: 'Imparare a partire da fermo',
           done: true
-      },
-      {
-          text: 'Imparare a cambiare le marce',
-          done: true
-      },
-      {
-          text: 'Imparare frenare',
-          done: false
-      },
-      {
-          text: 'Imparare a scalare le marce',
-          done: false
-      },
-      {
-          text: 'Imparare a parcheggiare',
-          done: false
-      }
-    ]
+        },
+        {
+            text: 'Imparare a cambiare le marce',
+            done: true
+        },
+        {
+            text: 'Imparare frenare',
+            done: false
+        },
+        {
+            text: 'Imparare a scalare le marce',
+            done: false
+        },
+        {
+            text: 'Imparare a parcheggiare',
+            done: false
+        }
+      ]
     }
   },
   methods: {
     addTask(task) {
-      console.log(`Added element '${task}'`);
+      if (task.length >= 10) {
       const newtask = {text: task, done: false};
       this.todoList.push(newtask);
       this.newTodo = '';
+      console.log(`Added element '${task}' in position ${this.todoList.length - 1}`);
+      } else {
+        alert('La lunghezza minima deve essere di almeno 10 caratteri');
+        console.log(`Task '${task}' not added because too short`);
+      };
     },
     removeTask(task, i) {
-      console.log(`Removed element '${task}' in position ${i}`);
       this.todoList.splice(i, 1);
+      console.log(`Removed element '${task.text}' in position ${i}`);
+    },
+    toggleDone(task, i) {
+      task.done ? this.todoList[i].done = false : this.todoList[i].done = true;
+      console.log(`L'elemento '${task.text}' è ora ${task.done ? 'fatto' : 'da fare'}`);
     }
   }
 }
@@ -78,10 +87,10 @@ export default {
 
 <ul>
   <li v-for="(todo, index) in todoList" :class="todo.done ? 'todo-done' : ''">
-    <div class="tagRemove" @click="removeTask(todo.text, index)"><i class="fa-solid fa-xmark"></i></div>
-    {{ todo.text}}
-  <span v-if="todo.done" :class="'color-green'"><i class="fa-regular fa-square-check"></i></span>
-  <span v-else="todo.done" :class="'color-red'"><i class="fa-regular fa-square"></i></span>
+    <div class="tagRemove" @click="removeTask(todo, index)"><i class="fa-solid fa-xmark"></i></div>
+    <span @click="toggleDone(todo, index)">{{ todo.text}}</span>
+  <span v-if="todo.done" :class="'color-green'" @click="toggleDone(todo, index)"><i class="fa-regular fa-square-check"></i></span>
+  <span v-else="todo.done" :class="'color-red'" @click="toggleDone(todo, index)"><i class="fa-regular fa-square"></i></span>
   </li>
 </ul>
 
@@ -91,8 +100,9 @@ export default {
 button{margin-left: 1rem;}
 *{list-style: none}
 li{display: flex; gap: .5rem; margin-block: 1rem;}
-.tagRemove{background: red; color: white; border-radius: 5px; padding-inline: .4rem; cursor: pointer;}
-.todo-done{text-decoration: line-through;}
+span, .tagRemove{cursor: pointer;}
+.tagRemove{background: red; color: white; border-radius: 5px; padding-inline: .4rem;}
+.todo-done{text-decoration: line-through}
 .color-green{color: green}
 .color-red{color: red}
 </style>
